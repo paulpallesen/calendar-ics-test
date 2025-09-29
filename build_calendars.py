@@ -12,6 +12,7 @@ csv_url = os.getenv('CSV_URL', 'https://docs.google.com/spreadsheets/d/e/2PACX-1
 logger.info("Loading CSV...")
 df = pd.read_csv(csv_url)
 logger.info(f"CSV loaded with {len(df)} rows.")
+logger.info(f"First 5 rows: {df.head()}")  # Log head for debugging
 
 Path('public').mkdir(parents=True, exist_ok=True)  # Create the public directory
 
