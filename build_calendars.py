@@ -13,7 +13,7 @@ logger.info("Loading CSV...")
 df = pd.read_csv(csv_url)
 logger.info(f"CSV loaded with {len(df)} rows.")
 
-Path('public').mkdir(parents=True, exist_ok=True)
+Path('public').mkdir(parents=True, exist_ok=True)  # Create the public directory
 
 cal = Calendar()
 cal.extra.append(('X-WR-CALNAME', 'Test Calendar'))
