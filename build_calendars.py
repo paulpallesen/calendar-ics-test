@@ -2,6 +2,7 @@ import os
 import pandas as pd
 from ics import Calendar, Event
 import logging
+from pathlib import Path
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -10,8 +11,9 @@ csv_url = os.getenv('CSV_URL', 'https://docs.google.com/spreadsheets/d/e/2PACX-1
 
 logger.info("Loading CSV...")
 df = pd.read_csv(csv_url)
-
 logger.info(f"CSV loaded with {len(df)} rows.")
+
+Path('public').mkdir(parents=True, exist_ok=True)  # Create the public directory
 
 cal = Calendar()
 cal.extra.append(('X-WR-CALNAME', 'Test Calendar'))
