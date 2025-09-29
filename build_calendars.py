@@ -22,18 +22,30 @@ Path('public').mkdir(parents=True, exist_ok=True)
 
 cal = Calendar()
 
-# Process all rows into events
+# Process all rows into events with detailed logging
 count = 0
 for idx, row in df.iterrows():
     try:
         event = Event()
-        event.name = str(row.get('Title', 'Untitled'))
-        event.begin = pd.to_datetime(row.get('Start Date', '2025-09-29') + ' ' + str(row.get('Start Time', '09:00:00'))).isoformat()
-        event.end = pd.to_datetime(row.get('End Date', '2025-09-29') + ' ' + str(row.get('End Time', '10:00:00'))).isoformat()
+        event.name = str(row.get('Title', f'Event {idx}'))
+        start_date = str(row.get('Start Date', '2025-09-29'))
+        start_time = str(row.get('Start Time', '09:00:00'))
+        end_date = str(row.get('End Date', start_date))
+        end_time = str(row.get('End Time', '10:00:00'))
+        
+        # Combine date and time for begin and end
+        event.begin = pd.to_datetime(f"{start_date} {start_time}", errors='coerce').isoformat()
+        event.end = pd.to_datetime(f"{end_date} {end_time}", errors='coerce').isoformat()
+        
+        if pd.isna(event.begin) or pd.isna(event.end):
+            logger.warning(f"Skipping row {idx} due to invalid date/time: Start={start_date} {start_time}, End={end_date} {end_time}")
+            continue
+        
         cal.events.add(event)
         count += 1
+        logger.info(f"Added event {count}: {event.name} from {event.begin} to {event.end}")
     except Exception as e:
-        logger.warning(f"Skipped row {idx} due to error: {e}")
+        logger.error(f"Error processing row {idx}: {e}")
         continue
 
 logger.info(f"Processed {count} events.")
