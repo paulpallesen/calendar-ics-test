@@ -7,7 +7,7 @@ import pandas as pd
 from datetime import timedelta
 from zoneinfo import ZoneInfo
 from ics import Calendar, Event
-from ics.parse import ContentLine  # Correct import for ContentLine
+from ics.grammar.parse import ContentLine  # Correct import for ContentLine in ics==0.7.2
 from pathlib import Path
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
