@@ -21,6 +21,7 @@ except Exception as e:
 Path('public').mkdir(parents=True, exist_ok=True)
 
 cal = Calendar()
+# Removed extra.append to avoid clone error
 
 # Add a test event
 event = Event()
